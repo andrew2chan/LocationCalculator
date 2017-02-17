@@ -1,0 +1,155 @@
+body,html {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #f5f5ef;
+	font-family: 'Exo 2', sans-serif;
+}
+
+footer {
+	width: 100%;
+	height: 155px;
+	background-color: #89bdd3;
+}
+
+@media screen and (max-width: 320px) { /* small phones */
+	ul#navbar {
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		list-style: none;
+		-webkit-box-shadow: 1px 1px 5px;
+		-moz-box-shadow: 1px 1px 5px;
+		box-shadow: 1px 1px 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		width: 100%;
+		background-color: #3b3a36;
+		color: white;
+		cursor: default;
+	}
+	
+	li.navbar { /* navbar items */
+		border-bottom: solid lightgrey;
+		background-color: #3b3a36;
+		font-weight: bold;
+	}
+	
+	li#logo {
+		display: inline-block;
+	}
+	
+	img#logo {
+		border-radius: 100px;
+		width: 40px;
+	}
+}
+@media screen and (min-width: 321px) and (max-width: 767px) { /* decent sized phones */
+	ul#navbar {
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		list-style: none;
+		-webkit-box-shadow: 1px 1px 5px;
+		-moz-box-shadow: 1px 1px 5px;
+		box-shadow: 1px 1px 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		width: 100%;
+		background-color: #3b3a36;
+		color: white;
+		cursor: default;
+	}
+	
+	li.navbar { /* navbar items */
+		border-bottom: solid lightgrey;
+		background-color: #3b3a36;
+		font-weight: bold;
+	}
+	
+	li#logo {
+		display: inline-block;
+	}
+	
+	img#logo {
+		border-radius: 100px;
+		width: 40px;
+	}
+	
+	
+}
+
+@media screen and (min-width: 768px) and (max-width: 1199px) { /* tablets */
+	ul#navbar {
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		list-style: none;
+		-webkit-box-shadow: 1px 1px 5px;
+		-moz-box-shadow: 1px 1px 5px;
+		box-shadow: 1px 1px 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		width: 100%;
+		background-color: #3b3a36;
+		color: white;
+		cursor: default;
+	}
+	
+	li.navbar { /* navbar items */
+		border-bottom: solid lightgrey;
+		background-color: #3b3a36;
+		font-weight: bold;
+	}
+	
+	li#logo {
+		display: inline-block;
+	}
+	
+	img#logo {
+		border-radius: 100px;
+		width: 40px;
+	}
+	
+	
+}
+@media screen and (min-width: 1200px) { /* desktops */
+
+	ul#navbar {
+		display: inline-block;
+		margin: 0;
+		padding: 0;
+		text-align: right;
+		list-style: none;
+		width: 100%;
+		background-color: #3b3a36;
+		color: white;
+	}
+	
+	li.navbar { /* navbar items */
+		display: inline-block;
+		padding: 20px 0;
+		cursor: default;
+	}
+	
+	li#logo {
+		display: inline-block;
+		vertical-align: bottom;
+		float: left;
+		font-size: 300%; 
+		cursor: default;
+	}
+	
+	img#logo {
+		display: inline-block;
+		margin-left: 10px;
+		border-radius: 100px;
+		width: 60px;
+	}
+	
+
+}
