@@ -151,5 +151,16 @@ footer {
 		width: 60px;
 	}
 	
-
+	section#dropBox {
+		border-style: dashed;
+		width: 400px;
+		height: 200px;
+		background-color: grey;
+		text-align: center;
+	}
+	
+	main {
+		width: 60%;
+		margin: auto;
+	}
 }
