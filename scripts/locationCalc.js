@@ -39,3 +39,33 @@ function processFiles(f) {
 	};
 	reader.readAsText(file);
 }
+
+function getLocation() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(initMap, error, 
+		{
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		});
+	} else {
+		alert("Geolocation is not supported by this browser.");
+	}
+}
+
+function initMap(position) {
+	var latlon = {lat: position.coords.latitude, lng: position.coords.longitude};
+	var map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 4,
+		center: latlon
+	});
+	var marker = new google.maps.Marker({
+		position: latlon,
+		map: map
+	});
+	console.log(position.coords.accuracy);
+}
+
+function error() {
+	alert("Error:" + error.message)
+}

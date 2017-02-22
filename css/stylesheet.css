@@ -152,15 +152,30 @@ footer {
 	}
 	
 	section#dropBox {
+		display: inline-block;
 		border-style: dashed;
-		width: 400px;
-		height: 200px;
+		width: 45%;
+		height: 300px;
 		background-color: grey;
 		text-align: center;
+		vertical-align: top;
 	}
 	
 	main {
 		width: 60%;
 		margin: auto;
+	}
+	
+	#map {
+		display: inline-block;
+		width: 45%;
+		height: 300px;
+		background-color: grey;
+		border-style: solid;
+		margin: 0px 20px;
+	}
+	
+	#mapDrop {
+		text-align: center;
 	}
 }

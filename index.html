@@ -18,15 +18,20 @@
 </header>
 
 <main>
-	<section id="dropBox">
-		<h1>Drag your text file here</h1>
+	<section id="mapDrop">
+		<section id="dropBox">
+			<h1>Drag your text file here</h1>
+		</section>
+		
+		<div id="map"></div>
+		<i>Note: Geolocation is not 100% accurate</i>
 	</section>
-	
 </main>
 
 <footer>
 
 </footer>
 <script src="./scripts/locationCalc.js" type="text/javascript"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZEoI2SISFpKkBuwQaNmXGp44JuOrLXko&callback=getLocation"></script>
 </body>
 </html>
