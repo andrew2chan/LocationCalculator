@@ -1,4 +1,5 @@
 var dropBox;
+var latlong;
 
 window.onload = function() {
 	dropBox = document.getElementById("dropBox");
@@ -35,11 +36,19 @@ function processFiles(f) {
 	var reader = new FileReader();
 	
 	reader.onload = function() {
-		console.log(reader.result);
+		var results = reader.result.split(",");
+		var worker = new Worker("./scripts/calculateHav.js");
+		worker.postMessage([results[0], results[1], latlong[0], latlong[1]]);
+		worker.addEventListener('message', calculateHav);
+		//worker.terminate();
+		function calculateHav(event) {
+			document.getElementById("distance").innerHTML = "Distance: " + event.data + " km";
+			worker.terminate();
+		}
 	};
 	reader.readAsText(file);
 }
-
+	
 function getLocation() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(initMap, error, 
@@ -55,6 +64,9 @@ function getLocation() {
 
 function initMap(position) {
 	var latlon = {lat: position.coords.latitude, lng: position.coords.longitude};
+	latlong = [latlon.lat];
+	latlong.push(latlon.lng);
+	console.log(latlong);
 	var map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 4,
 		center: latlon
