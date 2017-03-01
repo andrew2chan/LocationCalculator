@@ -1,6 +1,7 @@
 var dropBox;
 var latlong;
-var resultsInfo;
+var resultsInfo = [];
+var resultsLatlon;
 
 window.onload = function() {
 	dropBox = document.getElementById("dropBox");
@@ -31,21 +32,32 @@ function drop(e) {
 	changeBack(e);
 }
 
-function processFiles(f) {
+function processFiles(f) { //set other locations
 	var file = f[0];
 	
 	var reader = new FileReader();
 	
 	reader.onload = function() {
-		resultsInfo = reader.result.split(",");
-		console.log(resultsInfo);
+		var i;
 		var worker = new Worker("./scripts/calculateHav.js");
-		worker.postMessage([resultsInfo[0], resultsInfo[1], latlong[0], latlong[1]]);
-		worker.addEventListener('message', calculateHav);
-		//worker.terminate();
+		resultsLatlon = reader.result.split("\n");
+		for(i=0; i < resultsLatlon.length; i++) {
+			var tempResults = resultsLatlon[i].split(",");
+			resultsInfo.push(parseInt(tempResults[0]));
+			resultsInfo.push(parseInt(tempResults[1]));
+			
+			//resultsInfo = reader.result.split(",");
+			worker.postMessage([resultsInfo[0], resultsInfo[1], latlong[0], latlong[1]]);
+			worker.addEventListener('message', calculateHav);
+			//worker.terminate();
+			
+			resultsInfo.pop(tempResults[0]);
+			resultsInfo.pop(tempResults[1]);
+		}
+		
 		function calculateHav(event) {
-			document.getElementById("distance").innerHTML = "Distance: " + event.data + " km";
-			worker.terminate();
+			document.getElementById("distance").innerHTML += "Distance:" +  + event.data + " km<br>";
+			//worker.terminate();
 		}
 	};
 	reader.readAsText(file);
@@ -72,7 +84,7 @@ function getLocation() {
 	}
 }
 
-function initMap(position) {
+function initMap(position) { //shows your location
 	var latlon = {lat: position.coords.latitude, lng: position.coords.longitude};
 	latlong = [latlon.lat];
 	latlong.push(latlon.lng);
@@ -91,7 +103,7 @@ function error() {
 	alert("Error: " + error.message)
 }
 
-function changeLocation() {
+function changeLocation() { //change own position
 	var lat, lon;
 	lat = document.getElementById("latitude").value;
 	lon = document.getElementById("longitude").value;
@@ -99,7 +111,8 @@ function changeLocation() {
 }
 
 function changeMap(latitude, longitude) {
-	var latlon = {lat: parseInt(latitude), lng: parseInt(longitude)};
+	var latlon = {lat: parseFloat(latitude), lng: parseFloat(longitude)};
+	console.log(latlon);
 	latlong[0] = latlon.lat;
 	latlong[1] = latlon.lng;
 	console.log(latlong);
