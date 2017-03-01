@@ -18,6 +18,23 @@
 </header>
 
 <main>
+	<section>
+		<form>
+			<fieldset>
+				<legend>Enter current position in latitude and longitude</legend>
+				Latitude: <input type="text" id="latitude"><br>
+				Longitude: <input type="text" id="longitude"><br>
+				<input type="button" onclick="changeLocation()" value="Change">
+			</fieldset>
+		</form>
+	</section>
+	
+	<br><br>
+	
+	<section id="reverseGeocode"></section>
+	
+	<br><br>
+	
 	<section id="mapDrop">
 		<section id="dropBox">
 			<h1>Drag your text file here</h1>

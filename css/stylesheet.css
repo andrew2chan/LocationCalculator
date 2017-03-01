@@ -178,4 +178,8 @@ footer {
 	#mapDrop {
 		text-align: center;
 	}
+	
+	section#reverseGeocode {
+		margin: auto;
+	}
 }

@@ -1,5 +1,6 @@
 var dropBox;
 var latlong;
+var resultsInfo;
 
 window.onload = function() {
 	dropBox = document.getElementById("dropBox");
@@ -36,9 +37,10 @@ function processFiles(f) {
 	var reader = new FileReader();
 	
 	reader.onload = function() {
-		var results = reader.result.split(",");
+		resultsInfo = reader.result.split(",");
+		console.log(resultsInfo);
 		var worker = new Worker("./scripts/calculateHav.js");
-		worker.postMessage([results[0], results[1], latlong[0], latlong[1]]);
+		worker.postMessage([resultsInfo[0], resultsInfo[1], latlong[0], latlong[1]]);
 		worker.addEventListener('message', calculateHav);
 		//worker.terminate();
 		function calculateHav(event) {
@@ -47,6 +49,14 @@ function processFiles(f) {
 		}
 	};
 	reader.readAsText(file);
+	
+	var geocoder = new google.maps.Geocoder;
+
+	geocodeLatLng(geocoder);
+}
+
+function makeWorker() {
+	
 }
 	
 function getLocation() {
@@ -66,7 +76,6 @@ function initMap(position) {
 	var latlon = {lat: position.coords.latitude, lng: position.coords.longitude};
 	latlong = [latlon.lat];
 	latlong.push(latlon.lng);
-	console.log(latlong);
 	var map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 4,
 		center: latlon
@@ -79,5 +88,55 @@ function initMap(position) {
 }
 
 function error() {
-	alert("Error:" + error.message)
+	alert("Error: " + error.message)
+}
+
+function changeLocation() {
+	var lat, lon;
+	lat = document.getElementById("latitude").value;
+	lon = document.getElementById("longitude").value;
+	changeMap(lat, lon);
+}
+
+function changeMap(latitude, longitude) {
+	var latlon = {lat: parseInt(latitude), lng: parseInt(longitude)};
+	latlong[0] = latlon.lat;
+	latlong[1] = latlon.lng;
+	console.log(latlong);
+	var map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 4,
+		center: latlon
+	});
+	var marker = new google.maps.Marker({
+		position: latlon,
+		map: map
+	});
+	
+	var worker = new Worker("./scripts/calculateHav.js");
+	worker.postMessage([resultsInfo[0], resultsInfo[1], latlong[0], latlong[1]]);
+	worker.addEventListener('message', calculateHav);
+	//worker.terminate();
+	function calculateHav(event) {
+		document.getElementById("distance").innerHTML = "Distance: " + event.data + " km";
+		worker.terminate();
+	}
+	
+	var geocoder = new google.maps.Geocoder;
+
+	geocodeLatLng(geocoder);
+}
+
+function geocodeLatLng(geocoder) {
+	var latlng = {lat: latlong[0], lng: latlong[1]};
+	geocoder.geocode({'location': latlng}, function(results, status) {
+		if (status === 'OK') {
+			if (results[1]) {
+				document.getElementById("reverseGeocode").innerHTML = "Location: " + results[1].formatted_address;
+			} else {
+				window.alert('No results found');
+			}
+			} else {
+				window.alert('Geocoder failed due to: ' + status);
+		}
+	});
 }
