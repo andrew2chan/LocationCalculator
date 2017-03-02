@@ -36,6 +36,7 @@ function processFiles(f) { //set other locations
 	var file = f[0];
 	
 	var reader = new FileReader();
+	document.getElementById("distance").innerHTML = "";
 	
 	reader.onload = function() {
 		var i;
@@ -43,16 +44,16 @@ function processFiles(f) { //set other locations
 		resultsLatlon = reader.result.split("\n");
 		for(i=0; i < resultsLatlon.length; i++) {
 			var tempResults = resultsLatlon[i].split(",");
-			resultsInfo.push(parseInt(tempResults[0]));
-			resultsInfo.push(parseInt(tempResults[1]));
+			resultsInfo.push(parseFloat(tempResults[0]));
+			resultsInfo.push(parseFloat(tempResults[1]));
 			
 			//resultsInfo = reader.result.split(",");
 			worker.postMessage([resultsInfo[0], resultsInfo[1], latlong[0], latlong[1]]);
 			worker.addEventListener('message', calculateHav);
 			//worker.terminate();
 			
-			resultsInfo.pop(tempResults[0]);
-			resultsInfo.pop(tempResults[1]);
+			resultsInfo.shift();
+			resultsInfo.shift();
 		}
 		
 		function calculateHav(event) {
@@ -65,10 +66,6 @@ function processFiles(f) { //set other locations
 	var geocoder = new google.maps.Geocoder;
 
 	geocodeLatLng(geocoder);
-}
-
-function makeWorker() {
-	
 }
 	
 function getLocation() {
@@ -88,6 +85,7 @@ function initMap(position) { //shows your location
 	var latlon = {lat: position.coords.latitude, lng: position.coords.longitude};
 	latlong = [latlon.lat];
 	latlong.push(latlon.lng);
+	console.log(latlong);
 	var map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 4,
 		center: latlon
@@ -107,12 +105,14 @@ function changeLocation() { //change own position
 	var lat, lon;
 	lat = document.getElementById("latitude").value;
 	lon = document.getElementById("longitude").value;
+	document.getElementById("distance").innerHTML = "";
 	changeMap(lat, lon);
 }
 
 function changeMap(latitude, longitude) {
+	document.getElementById("distance").innerHTML = "";
+	var tempResults;
 	var latlon = {lat: parseFloat(latitude), lng: parseFloat(longitude)};
-	console.log(latlon);
 	latlong[0] = latlon.lat;
 	latlong[1] = latlon.lng;
 	console.log(latlong);
@@ -126,12 +126,19 @@ function changeMap(latitude, longitude) {
 	});
 	
 	var worker = new Worker("./scripts/calculateHav.js");
-	worker.postMessage([resultsInfo[0], resultsInfo[1], latlong[0], latlong[1]]);
-	worker.addEventListener('message', calculateHav);
+	for(i=0; i < resultsLatlon.length; i++) {
+		tempResults = resultsLatlon[i].split(",");
+		
+		worker.postMessage([tempResults[0], tempResults[1], latlong[0], latlong[1]]);
+		worker.addEventListener('message', calculateHav);
+		//worker.terminate();
+		
+		tempResults.shift();
+		tempResults.shift();
+	}
 	//worker.terminate();
 	function calculateHav(event) {
-		document.getElementById("distance").innerHTML = "Distance: " + event.data + " km";
-		worker.terminate();
+		document.getElementById("distance").innerHTML += "Distance: " + event.data + " km<br>";
 	}
 	
 	var geocoder = new google.maps.Geocoder;

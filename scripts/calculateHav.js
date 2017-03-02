@@ -1,6 +1,6 @@
 var distance;
 
-onmessage = function calculateHav(event) {
+function calculateHav(event) {
 	var destLat, destLon, currLat, currLon, havLat, havLon, thetaLat, thetaLon;
 	destLat = event.data[0] * (Math.PI/180);
 	destLon = event.data[1] * (Math.PI/180);
