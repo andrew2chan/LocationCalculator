@@ -57,7 +57,7 @@ function processFiles(f) { //set other locations
 		}
 		
 		function calculateHav(event) {
-			document.getElementById("distance").innerHTML += "Distance:" +  + event.data + " km<br>";
+			document.getElementById("distance").innerHTML += "Distance: " +  + event.data + " km<br>";
 			//worker.terminate();
 		}
 	};
